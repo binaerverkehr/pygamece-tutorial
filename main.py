@@ -13,19 +13,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # Ereignisbasierte Steuerung
-        """
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                y -= 50
-            if event.key == pygame.K_s:
-                y += 50
-            if event.key == pygame.K_a:
-                x -= 50
-            if event.key == pygame.K_d:
-                x += 50
-        """
-
     # Zustandsbasierte Steuerung
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
