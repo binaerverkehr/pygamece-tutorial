@@ -2,11 +2,15 @@ import pygame
 
 pygame.init()
 
-window = pygame.display.set_mode((800, 600))
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 x = window.get_width() / 2
 y = window.get_height() / 2
 clock = pygame.time.Clock()
 speed = 300
+radius = 50
 
 running = True
 while running:
@@ -27,10 +31,19 @@ while running:
         x -= movement
     if keys[pygame.K_d]:
         x += movement
-
+    
+    if x + radius > WINDOW_WIDTH:
+        x = WINDOW_WIDTH - radius
+    if x - radius < 0:
+        x = radius
+    if y - radius < 0:
+        y = radius
+    if y + radius > WINDOW_HEIGHT:
+        y = WINDOW_HEIGHT - radius
+    
     window.fill("white")
 
-    pygame.draw.circle(window, "blue", (x, y), 50)
+    pygame.draw.circle(window, "blue", (x, y), radius)
 
     pygame.display.flip()
 
