@@ -1,16 +1,18 @@
 import pygame
+from player import Player
 
 pygame.init()
 
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 1920
+WINDOW_HEIGHT = 1080
+CENTER_X = WINDOW_WIDTH / 2
+CENTER_Y = WINDOW_HEIGHT / 2
 
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-x = window.get_width() / 2
-y = window.get_height() / 2
 clock = pygame.time.Clock()
-speed = 300
-radius = 50
+speed = 600
+
+player = Player(CENTER_X-50, CENTER_Y-50, 100, 100)
 
 running = True
 while running:
@@ -24,26 +26,26 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        y -= movement
+        player.y -= movement
     if keys[pygame.K_s]:
-        y += movement
+        player.y += movement
     if keys[pygame.K_a]:
-        x -= movement
+        player.x -= movement
     if keys[pygame.K_d]:
-        x += movement
+        player.x += movement
     
-    if x + radius > WINDOW_WIDTH:
-        x = WINDOW_WIDTH - radius
-    if x - radius < 0:
-        x = radius
-    if y - radius < 0:
-        y = radius
-    if y + radius > WINDOW_HEIGHT:
-        y = WINDOW_HEIGHT - radius
+    if player.x + player.width > WINDOW_WIDTH:
+        player.x = WINDOW_WIDTH - player.width
+    if player.x < 0:
+        player.x = 0
+    if player.y < 0:
+        player.y = 0
+    if player.y + player.width > WINDOW_HEIGHT:
+        player.y = WINDOW_HEIGHT - player.width
     
     window.fill("white")
 
-    pygame.draw.circle(window, "blue", (x, y), radius)
+    pygame.draw.rect(window, "blue", player.rect)
 
     pygame.display.flip()
 
