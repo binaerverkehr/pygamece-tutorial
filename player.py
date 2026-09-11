@@ -1,9 +1,9 @@
 import pygame
 
 class Player:
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
+    def __init__(self, x: float, y: float, width, height):
+        self.x = float(x)
+        self.y = float(y)
         self.width = width
         self.height = height
 
