@@ -23,6 +23,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     
+    previous_x = player.x
+    previous_y = player.y
+
     movement = dt * speed
 
     keys = pygame.key.get_pressed()
@@ -46,9 +49,8 @@ while running:
 
     collision = player.rect.colliderect(obstacle)
     if collision:
-        print("KOLLISION!")
-    else:
-        print("...")
+        player.x = previous_x
+        player.y = previous_y
     
     window.fill("white")
 
