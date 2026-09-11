@@ -13,6 +13,7 @@ clock = pygame.time.Clock()
 speed = 600
 
 player = Player(CENTER_X-50, CENTER_Y-50, 100, 100)
+obstacle = pygame.Rect((player.x + 300, player.y - player.height/2), (200, 200))
 
 running = True
 while running:
@@ -44,6 +45,8 @@ while running:
         player.y = WINDOW_HEIGHT - player.width
     
     window.fill("white")
+
+    pygame.draw.rect(window, "grey", obstacle)
 
     pygame.draw.rect(window, "blue", player.rect)
 
