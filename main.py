@@ -11,6 +11,7 @@ CENTER_Y = WINDOW_HEIGHT / 2
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 speed = 600
+radius = 50
 
 player = Player(CENTER_X-50, CENTER_Y-50, 100, 100)
 obstacle = pygame.Rect((player.x + 300, player.y - player.height/2), (200, 200))
@@ -22,7 +23,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
+
     movement = dt * speed
 
     movement_x = 0
@@ -37,39 +38,38 @@ while running:
         movement_x -= movement
     if keys[pygame.K_d]:
         movement_x += movement
-
-    # Horizontale Kollision
+    
+    # Horizontale Kollisionserkennung
     player.x += movement_x
-    # Player-Obstacle
+
+    if player.x + player.width > WINDOW_WIDTH:
+        player.x = WINDOW_WIDTH - player.width
+    if player.x < 0:
+        player.x = 0
+
     if player.rect.colliderect(obstacle):
         if movement_x > 0: # []-->[]
             player.x = obstacle.left - player.width
         elif movement_x < 0: # []<--[]
             player.x = obstacle.right
-    # Player-Fensterkante (links/rechts)
-    if player.x < 0:
-        player.x = 0
-    if player.x + player.width > WINDOW_WIDTH:
-        player.x = WINDOW_WIDTH - player.width
 
-    # Vertikale Kollision
+    # Vertikale Kollisionserkennung
     player.y += movement_y
+
+    if player.y < 0:
+        player.y = 0
+    if player.y + player.height > WINDOW_HEIGHT:
+        player.y = WINDOW_HEIGHT - player.height
 
     if player.rect.colliderect(obstacle):
         if movement_y > 0:
             player.y = obstacle.top - player.height
         elif movement_y < 0:
             player.y = obstacle.bottom
-    # Player-Fensterkante (oben/unten)
-    if player.y < 0:
-        player.y = 0
-    if player.y + player.height > WINDOW_HEIGHT:
-        player.y = WINDOW_HEIGHT - player.height
     
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)
-
     pygame.draw.rect(window, "blue", player.rect)
 
     pygame.display.flip()
