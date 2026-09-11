@@ -43,6 +43,17 @@ while running:
         player.y = 0
     if player.y + player.width > WINDOW_HEIGHT:
         player.y = WINDOW_HEIGHT - player.width
+
+    collision = (
+        player.rect.left < obstacle.right
+        and player.rect.right > obstacle.left
+        and player.rect.top < obstacle.bottom
+        and player.rect.bottom > obstacle.top
+    )
+    if collision:
+        print("KOLLISION!")
+    else:
+        print("...")
     
     window.fill("white")
 
