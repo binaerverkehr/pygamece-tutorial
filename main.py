@@ -37,24 +37,20 @@ while running:
         movement_x -= movement
     if keys[pygame.K_d]:
         movement_x += movement
-    
-    if player.x + player.width > WINDOW_WIDTH:
-        player.x = WINDOW_WIDTH - player.width
-    if player.x < 0:
-        player.x = 0
-    if player.y < 0:
-        player.y = 0
-    if player.y + player.height > WINDOW_HEIGHT:
-        player.y = WINDOW_HEIGHT - player.height
 
     # Horizontale Kollision
     player.x += movement_x
-
+    # Player-Obstacle
     if player.rect.colliderect(obstacle):
         if movement_x > 0: # []-->[]
             player.x = obstacle.left - player.width
         elif movement_x < 0: # []<--[]
             player.x = obstacle.right
+    # Player-Fensterkante (links/rechts)
+    if player.x < 0:
+        player.x = 0
+    if player.x + player.width > WINDOW_WIDTH:
+        player.x = WINDOW_WIDTH - player.width
 
     # Vertikale Kollision
     player.y += movement_y
@@ -64,6 +60,11 @@ while running:
             player.y = obstacle.top - player.height
         elif movement_y < 0:
             player.y = obstacle.bottom
+    # Player-Fensterkante (oben/unten)
+    if player.y < 0:
+        player.y = 0
+    if player.y + player.height > WINDOW_HEIGHT:
+        player.y = WINDOW_HEIGHT - player.height
     
     window.fill("white")
 
