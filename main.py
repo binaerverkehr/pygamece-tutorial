@@ -47,8 +47,23 @@ while running:
     if player.y + player.height > WINDOW_HEIGHT:
         player.y = WINDOW_HEIGHT - player.height
 
+    # Horizontale Kollision
     player.x += movement_x
+
+    if player.rect.colliderect(obstacle):
+        if movement_x > 0: # []-->[]
+            player.x = obstacle.left - player.width
+        elif movement_x < 0: # []<--[]
+            player.x = obstacle.right
+
+    # Vertikale Kollision
     player.y += movement_y
+
+    if player.rect.colliderect(obstacle):
+        if movement_y > 0:
+            player.y = obstacle.top - player.height
+        elif movement_y < 0:
+            player.y = obstacle.bottom
     
     window.fill("white")
 
