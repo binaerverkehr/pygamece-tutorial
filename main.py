@@ -23,20 +23,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     
-    previous_x = player.x
-    previous_y = player.y
-
     movement = dt * speed
+
+    movement_x = 0
+    movement_y = 0
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        player.y -= movement
+        movement_y -= movement
     if keys[pygame.K_s]:
-        player.y += movement
+        movement_y += movement
     if keys[pygame.K_a]:
-        player.x -= movement
+        movement_x -= movement
     if keys[pygame.K_d]:
-        player.x += movement
+        movement_x += movement
     
     if player.x + player.width > WINDOW_WIDTH:
         player.x = WINDOW_WIDTH - player.width
@@ -44,13 +44,11 @@ while running:
         player.x = 0
     if player.y < 0:
         player.y = 0
-    if player.y + player.width > WINDOW_HEIGHT:
-        player.y = WINDOW_HEIGHT - player.width
+    if player.y + player.height > WINDOW_HEIGHT:
+        player.y = WINDOW_HEIGHT - player.height
 
-    collision = player.rect.colliderect(obstacle)
-    if collision:
-        player.x = previous_x
-        player.y = previous_y
+    player.x += movement_x
+    player.y += movement_y
     
     window.fill("white")
 
