@@ -1,4 +1,5 @@
 import pygame
+
 from player import Player
 
 pygame.init()
@@ -13,8 +14,8 @@ clock = pygame.time.Clock()
 speed = 600
 radius = 50
 
-player = Player(CENTER_X-50, CENTER_Y-50, 100, 100)
-obstacle = pygame.Rect((player.x + 300, player.y - player.height/2), (200, 200))
+player = Player(CENTER_X - 50, CENTER_Y - 50, 100, 100)
+obstacle = pygame.Rect((player.x + 300, player.y - player.height / 2), (200, 200))
 
 running = True
 while running:
@@ -38,26 +39,24 @@ while running:
         movement_x -= movement
     if keys[pygame.K_d]:
         movement_x += movement
-    
+
     # Horizontale Kollisionserkennung
     player.x += movement_x
 
     if player.x + player.width > WINDOW_WIDTH:
         player.x = WINDOW_WIDTH - player.width
-    if player.x < 0:
-        player.x = 0
+    player.x = max(player.x, 0)
 
     if player.rect.colliderect(obstacle):
-        if movement_x > 0: # []-->[]
+        if movement_x > 0:  # []-->[]
             player.x = obstacle.left - player.width
-        elif movement_x < 0: # []<--[]
+        elif movement_x < 0:  # []<--[]
             player.x = obstacle.right
 
     # Vertikale Kollisionserkennung
     player.y += movement_y
 
-    if player.y < 0:
-        player.y = 0
+    player.y = max(player.y, 0)
     if player.y + player.height > WINDOW_HEIGHT:
         player.y = WINDOW_HEIGHT - player.height
 
@@ -66,7 +65,7 @@ while running:
             player.y = obstacle.top - player.height
         elif movement_y < 0:
             player.y = obstacle.bottom
-    
+
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)

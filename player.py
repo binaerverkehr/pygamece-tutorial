@@ -1,5 +1,6 @@
 import pygame
 
+
 class Player:
     def __init__(self, x: float, y: float, width, height):
         self.x = float(x)
