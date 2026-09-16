@@ -64,10 +64,19 @@ while running:
     elif player.y > obstacle.bottom:
         nearest_y = obstacle.bottom
 
+    dx = player.x - nearest_x
+    dy = player.y - nearest_y
+    distance_squared = dx * dx + dy * dy
+    collision = distance_squared < player.radius * player.radius
+
+    color = "blue"
+    if collision:
+        color = "red"
+
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)
-    pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
+    pygame.draw.circle(window, color, (player.x, player.y), player.radius)
     pygame.draw.circle(window, "black", (nearest_x, nearest_y), 5)
 
     pygame.display.flip()
