@@ -14,8 +14,8 @@ clock = pygame.time.Clock()
 speed = 600
 radius = 50
 
-player = Player(CENTER_X - 50, CENTER_Y - 50, 100, 100)
-obstacle = pygame.Rect((player.x + 300, player.y - player.height / 2), (200, 200))
+player = Player(CENTER_X - 50, CENTER_Y - 50, radius)
+obstacle = pygame.Rect((CENTER_X + 250, CENTER_Y - 100), (200, 200))
 
 running = True
 while running:
@@ -40,36 +40,22 @@ while running:
     if keys[pygame.K_d]:
         movement_x += movement
 
-    # Horizontale Kollisionserkennung
     player.x += movement_x
-
-    if player.x + player.width > WINDOW_WIDTH:
-        player.x = WINDOW_WIDTH - player.width
-    player.x = max(player.x, 0)
-
-    if player.rect.colliderect(obstacle):
-        if movement_x > 0:  # []-->[]
-            player.x = obstacle.left - player.width
-        elif movement_x < 0:  # []<--[]
-            player.x = obstacle.right
-
-    # Vertikale Kollisionserkennung
     player.y += movement_y
 
-    player.y = max(player.y, 0)
-    if player.y + player.height > WINDOW_HEIGHT:
-        player.y = WINDOW_HEIGHT - player.height
-
-    if player.rect.colliderect(obstacle):
-        if movement_y > 0:
-            player.y = obstacle.top - player.height
-        elif movement_y < 0:
-            player.y = obstacle.bottom
+    if player.x - player.radius < 0:
+        player.x = player.radius
+    if player.x + player.radius > WINDOW_WIDTH:
+        player.x = WINDOW_WIDTH - player.radius
+    if player.y - player.radius < 0:
+        player.y = player.radius
+    if player.y + player.radius > WINDOW_HEIGHT:
+        player.y = WINDOW_HEIGHT - player.radius
 
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)
-    pygame.draw.rect(window, "blue", player.rect)
+    pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
 
     pygame.display.flip()
 
