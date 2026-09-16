@@ -1,13 +1,5 @@
-import pygame
-
-
 class Player:
-    def __init__(self, x: float, y: float, width, height):
+    def __init__(self, x: float, y: float, radius):
         self.x = float(x)
         self.y = float(y)
-        self.width = width
-        self.height = height
-
-    @property
-    def rect(self):
-        return pygame.Rect((self.x, self.y), (self.width, self.height))
+        self.radius = radius
