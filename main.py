@@ -52,10 +52,23 @@ while running:
     if player.y + player.radius > WINDOW_HEIGHT:
         player.y = WINDOW_HEIGHT - player.radius
 
+    nearest_x = player.x
+    if player.x < obstacle.left:
+        nearest_x = obstacle.left
+    elif player.x > obstacle.right:
+        nearest_x = obstacle.right
+
+    nearest_y = player.y
+    if player.y < obstacle.top:
+        nearest_y = obstacle.top
+    elif player.y > obstacle.bottom:
+        nearest_y = obstacle.bottom
+
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)
     pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
+    pygame.draw.circle(window, "black", (nearest_x, nearest_y), 5)
 
     pygame.display.flip()
 
