@@ -40,27 +40,32 @@ while running:
     if keys[pygame.K_d]:
         movement_x += movement
 
-    previous_x = player.x
-    player.x += movement_x
+    steps = int(movement) + 1
+    step_x = movement_x / steps
+    step_y = movement_y / steps
 
-    if player.x - player.radius < 0:
-        player.x = player.radius
-    if player.x + player.radius > WINDOW_WIDTH:
-        player.x = WINDOW_WIDTH - player.radius
+    for step in range(steps):
+        previous_x = player.x
+        player.x += step_x
 
-    if player.overlaps_rect(obstacle):
-        player.x = previous_x
+        if player.x - player.radius < 0:
+            player.x = player.radius
+        if player.x + player.radius > WINDOW_WIDTH:
+            player.x = WINDOW_WIDTH - player.radius
 
-    previous_y = player.y
-    player.y += movement_y
+        if player.overlaps_rect(obstacle):
+            player.x = previous_x
 
-    if player.y - player.radius < 0:
-        player.y = player.radius
-    if player.y + player.radius > WINDOW_HEIGHT:
-        player.y = WINDOW_HEIGHT - player.radius
+        previous_y = player.y
+        player.y += step_y
 
-    if player.overlaps_rect(obstacle):
-        player.y = previous_y
+        if player.y - player.radius < 0:
+            player.y = player.radius
+        if player.y + player.radius > WINDOW_HEIGHT:
+            player.y = WINDOW_HEIGHT - player.radius
+
+        if player.overlaps_rect(obstacle):
+            player.y = previous_y
 
     window.fill("white")
 
