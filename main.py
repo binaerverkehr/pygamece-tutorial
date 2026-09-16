@@ -40,44 +40,32 @@ while running:
     if keys[pygame.K_d]:
         movement_x += movement
 
+    previous_x = player.x
     player.x += movement_x
-    player.y += movement_y
 
     if player.x - player.radius < 0:
         player.x = player.radius
     if player.x + player.radius > WINDOW_WIDTH:
         player.x = WINDOW_WIDTH - player.radius
+
+    if player.overlaps_rect(obstacle):
+        player.x = previous_x
+
+    previous_y = player.y
+    player.y += movement_y
+
     if player.y - player.radius < 0:
         player.y = player.radius
     if player.y + player.radius > WINDOW_HEIGHT:
         player.y = WINDOW_HEIGHT - player.radius
 
-    nearest_x = player.x
-    if player.x < obstacle.left:
-        nearest_x = obstacle.left
-    elif player.x > obstacle.right:
-        nearest_x = obstacle.right
-
-    nearest_y = player.y
-    if player.y < obstacle.top:
-        nearest_y = obstacle.top
-    elif player.y > obstacle.bottom:
-        nearest_y = obstacle.bottom
-
-    dx = player.x - nearest_x
-    dy = player.y - nearest_y
-    distance_squared = dx * dx + dy * dy
-    collision = distance_squared < player.radius * player.radius
-
-    color = "blue"
-    if collision:
-        color = "red"
+    if player.overlaps_rect(obstacle):
+        player.y = previous_y
 
     window.fill("white")
 
     pygame.draw.rect(window, "grey", obstacle)
-    pygame.draw.circle(window, color, (player.x, player.y), player.radius)
-    pygame.draw.circle(window, "black", (nearest_x, nearest_y), 5)
+    pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
 
     pygame.display.flip()
 
