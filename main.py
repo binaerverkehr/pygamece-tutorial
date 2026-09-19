@@ -15,7 +15,12 @@ speed = 600
 radius = 50
 
 player = Player(CENTER_X - 50, CENTER_Y - 50, radius)
-obstacle = pygame.Rect((CENTER_X + 250, CENTER_Y - 100), (200, 200))
+
+obstacles = [
+    pygame.Rect((CENTER_X + 250, CENTER_Y - 100), (200, 200)),
+    pygame.Rect((CENTER_X + 250, CENTER_Y - 400), (200, 200)),
+    pygame.Rect((CENTER_X + 250, CENTER_Y + 200), (200, 200)),
+]
 
 running = True
 while running:
@@ -53,8 +58,10 @@ while running:
         if player.x + player.radius > WINDOW_WIDTH:
             player.x = WINDOW_WIDTH - player.radius
 
-        if player.overlaps_rect(obstacle):
-            player.x = previous_x
+        for obstacle in obstacles:
+            if player.overlaps_rect(obstacle):
+                player.x = previous_x
+                break
 
         previous_y = player.y
         player.y += step_y
@@ -64,12 +71,16 @@ while running:
         if player.y + player.radius > WINDOW_HEIGHT:
             player.y = WINDOW_HEIGHT - player.radius
 
-        if player.overlaps_rect(obstacle):
-            player.y = previous_y
+        for obstacle in obstacles:
+            if player.overlaps_rect(obstacle):
+                player.y = previous_y
+                break
 
     window.fill("white")
 
-    pygame.draw.rect(window, "grey", obstacle)
+    for obstacle in obstacles:
+        pygame.draw.rect(window, "grey", obstacle)
+
     pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
 
     pygame.display.flip()
