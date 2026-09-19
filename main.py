@@ -15,7 +15,6 @@ speed = 600
 radius = 50
 
 player = Player(CENTER_X - 50, CENTER_Y - 50, radius)
-
 obstacles = [
     pygame.Rect((CENTER_X + 250, CENTER_Y - 100), (200, 200)),
     pygame.Rect((CENTER_X + 250, CENTER_Y - 400), (200, 200)),
@@ -61,7 +60,6 @@ while running:
         for obstacle in obstacles:
             if player.overlaps_rect(obstacle):
                 player.x = previous_x
-                break
 
         previous_y = player.y
         player.y += step_y
@@ -74,7 +72,6 @@ while running:
         for obstacle in obstacles:
             if player.overlaps_rect(obstacle):
                 player.y = previous_y
-                break
 
     window.fill("white")
 
