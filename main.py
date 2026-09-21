@@ -4,22 +4,50 @@ from player import Player
 
 pygame.init()
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
-CENTER_X = WINDOW_WIDTH / 2
-CENTER_Y = WINDOW_HEIGHT / 2
+TILE_SIZE = 60
+PLAYER_RADIUS = 20
+
+level = [
+    "################",
+    "#P     #       #",
+    "# #### # ##### #",
+    "#    #   #     #",
+    "#### ##### ### #",
+    "#          #  G#",
+    "################",
+]
+
+WINDOW_WIDTH = len(level[0]) * TILE_SIZE
+WINDOW_HEIGHT = len(level) * TILE_SIZE
 
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 speed = 600
-radius = 50
 
-player = Player(CENTER_X - 50, CENTER_Y - 50, radius)
-obstacles = [
-    pygame.Rect((CENTER_X + 250, CENTER_Y - 100), (200, 200)),
-    pygame.Rect((CENTER_X + 250, CENTER_Y - 400), (200, 200)),
-    pygame.Rect((CENTER_X + 250, CENTER_Y + 200), (200, 200)),
-]
+walls = []
+for row_index, row in enumerate(level):
+    for col_index, char in enumerate(row):
+        x = col_index * TILE_SIZE
+        y = row_index * TILE_SIZE
+        if char == "#":
+            walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
+        elif char == "P":
+            start_x = x + TILE_SIZE / 2
+            start_y = y + TILE_SIZE / 2
+
+player = Player(start_x, start_y, PLAYER_RADIUS)
+walls = []
+
+for row_index, row in enumerate(level):
+    for col_index, char in enumerate(row):
+        x = col_index * TILE_SIZE
+        y = row_index * TILE_SIZE
+        if char == "#":
+            walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
+        elif char == "P":
+            player.x = x + TILE_SIZE / 2
+            player.y = y + TILE_SIZE / 2
+
 
 running = True
 while running:
@@ -52,31 +80,30 @@ while running:
         previous_x = player.x
         player.x += step_x
 
-        if player.x - player.radius < 0:
-            player.x = player.radius
-        if player.x + player.radius > WINDOW_WIDTH:
-            player.x = WINDOW_WIDTH - player.radius
+        # Fenster links/rechts
+        player.x = pygame.math.clamp(
+            player.x, player.radius, WINDOW_WIDTH - player.radius
+        )
 
-        for obstacle in obstacles:
-            if player.overlaps_rect(obstacle):
+        for wall in walls:
+            if player.overlaps_rect(wall):
                 player.x = previous_x
 
         previous_y = player.y
         player.y += step_y
 
-        if player.y - player.radius < 0:
-            player.y = player.radius
-        if player.y + player.radius > WINDOW_HEIGHT:
-            player.y = WINDOW_HEIGHT - player.radius
+        player.y = pygame.math.clamp(
+            player.y, player.radius, WINDOW_HEIGHT - player.radius
+        )
 
-        for obstacle in obstacles:
-            if player.overlaps_rect(obstacle):
+        for wall in walls:
+            if player.overlaps_rect(wall):
                 player.y = previous_y
 
     window.fill("white")
 
-    for obstacle in obstacles:
-        pygame.draw.rect(window, "grey", obstacle)
+    for wall in walls:
+        pygame.draw.rect(window, "grey", wall)
 
     pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
 
