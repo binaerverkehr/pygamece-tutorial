@@ -24,18 +24,7 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 speed = 600
 
-walls = []
-for row_index, row in enumerate(level):
-    for col_index, char in enumerate(row):
-        x = col_index * TILE_SIZE
-        y = row_index * TILE_SIZE
-        if char == "#":
-            walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
-        elif char == "P":
-            start_x = x + TILE_SIZE / 2
-            start_y = y + TILE_SIZE / 2
-
-player = Player(start_x, start_y, PLAYER_RADIUS)
+player = Player(0, 0, PLAYER_RADIUS)
 walls = []
 
 for row_index, row in enumerate(level):
@@ -47,7 +36,6 @@ for row_index, row in enumerate(level):
         elif char == "P":
             player.x = x + TILE_SIZE / 2
             player.y = y + TILE_SIZE / 2
-
 
 running = True
 while running:
@@ -80,10 +68,10 @@ while running:
         previous_x = player.x
         player.x += step_x
 
-        # Fenster links/rechts
-        player.x = pygame.math.clamp(
-            player.x, player.radius, WINDOW_WIDTH - player.radius
-        )
+        if player.x - player.radius < 0:
+            player.x = player.radius
+        if player.x + player.radius > WINDOW_WIDTH:
+            player.x = WINDOW_WIDTH - player.radius
 
         for wall in walls:
             if player.overlaps_rect(wall):
@@ -92,9 +80,10 @@ while running:
         previous_y = player.y
         player.y += step_y
 
-        player.y = pygame.math.clamp(
-            player.y, player.radius, WINDOW_HEIGHT - player.radius
-        )
+        if player.y - player.radius < 0:
+            player.y = player.radius
+        if player.y + player.radius > WINDOW_HEIGHT:
+            player.y = WINDOW_HEIGHT - player.radius
 
         for wall in walls:
             if player.overlaps_rect(wall):
@@ -105,7 +94,7 @@ while running:
     for wall in walls:
         pygame.draw.rect(window, "grey", wall)
 
-    pygame.draw.circle(window, "blue", (player.x, player.y), player.radius)
+    pygame.draw.circle(window, "blue", (player.x, player.y), PLAYER_RADIUS)
 
     pygame.display.flip()
 
