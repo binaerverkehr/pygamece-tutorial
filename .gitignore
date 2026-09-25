@@ -221,3 +221,5 @@ __marimo__/
 
 # venv
 venv/
+# excalidraw
+*.excalidraw
