@@ -1,103 +1,8 @@
 import pygame
 
-TILE_SIZE = 60
-PLAYER_RADIUS = 20
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
-
-level1 = [
-    "################",
-    "#P     #       #",
-    "# #### # ##### #",
-    "#    #   #     #",
-    "#### ##### ### #",
-    "#          #  G#",
-    "################",
-]
-
-level2 = [
-    "################",
-    "#G     #       #",
-    "# #### # ## ####",
-    "# ####    # ##P#",
-    "# ######### ## #",
-    "#     #        #",
-    "################",
-]
-
-level3 = [
-    "################",
-    "#P####    ####G#",
-    "# #### ## #### #",
-    "#      ##      #",
-    "################",
-]
-
-
-class Player:
-    def __init__(self, x: float, y: float, radius, color):
-        self.x = float(x)
-        self.y = float(y)
-        self.radius = radius
-        self.speed = 600
-        self.color = color
-
-    def overlaps_rect(self, rect):
-        nearest_x = self.x
-        if self.x < rect.left:
-            nearest_x = rect.left
-        elif self.x > rect.right:
-            nearest_x = rect.right
-
-        nearest_y = self.y
-        if self.y < rect.top:
-            nearest_y = rect.top
-        elif self.y > rect.bottom:
-            nearest_y = rect.bottom
-
-        dx = self.x - nearest_x
-        dy = self.y - nearest_y
-        distance_squared = dx * dx + dy * dy
-        return distance_squared < self.radius * self.radius
-
-    def render(self, surface):
-        pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
-
-
-class Level:
-    def __init__(self, layout: list[str]):
-        self.layout = layout
-        self.walls = []
-        self.goal = None
-        self.player_start_x = 0
-        self.player_start_y = 0
-
-        for row_index, row in enumerate(self.layout):
-            for col_index, char in enumerate(row):
-                x = col_index * TILE_SIZE
-                y = row_index * TILE_SIZE
-                if char == "#":
-                    self.walls.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
-                elif char == "P":
-                    self.player_start_x = x + TILE_SIZE / 2
-                    self.player_start_y = y + TILE_SIZE / 2
-                elif char == "G":
-                    self.goal = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
-
-    @property
-    def cols(self):
-        return len(self.layout[0])
-
-    @property
-    def rows(self):
-        return len(self.layout)
-
-    def render(self, surface):
-        for rect in self.walls:
-            pygame.draw.rect(surface, "grey", rect)
-
-        if self.goal is not None:
-            pygame.draw.rect(surface, "green", self.goal)
+from constants import *
+from level import Level, test_levels
+from player import Player
 
 
 class Game:
@@ -108,7 +13,7 @@ class Game:
         self.dt = 0
         self.running = True
 
-        self.levels = [Level(level1), Level(level2), Level(level3)]
+        self.levels = test_levels
         self.level_index = 0
         self.level: Level = self.levels[self.level_index]
 
@@ -235,4 +140,5 @@ class Game:
         pygame.quit()
 
 
-Game().run()
+if __name__ == "__main__":
+    Game().run()
