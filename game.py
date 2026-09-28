@@ -1,7 +1,7 @@
 import pygame
 
 from constants import *
-from level import Level, test_levels
+from level import TEST_LEVELS, Level
 from player import Player
 
 
@@ -13,7 +13,7 @@ class Game:
         self.dt = 0
         self.running = True
 
-        self.levels = test_levels
+        self.levels = TEST_LEVELS
         self.level_index = 0
         self.level: Level = self.levels[self.level_index]
 
@@ -28,8 +28,8 @@ class Game:
         self.player = Player(player_x, player_y, PLAYER_RADIUS, "blue")
 
         self.won = False
-        font = pygame.font.Font(None, 72)
-        self.win_text = font.render("Gewonnen!", True, "black")
+        self.font = pygame.font.Font(None, 72)
+        self.win_text = self.font.render("Gewonnen!", True, "black")
 
     def move_player(self, dt):
         player = self.player
@@ -65,6 +65,16 @@ class Game:
                     player.x = previous_x
                     break
 
+            for door in self.level.doors:
+                if not player.inventory:
+                    if player.overlaps_rect(door):
+                        player.x = previous_x
+                        break
+                else:
+                    if player.overlaps_rect(door):
+                        self.level.doors.remove(door)
+                        self.player.inventory.pop()
+
             previous_y = player.y
             player.y += step_y
 
@@ -77,6 +87,16 @@ class Game:
                 if player.overlaps_rect(wall):
                     player.y = previous_y
                     break
+
+            for door in self.level.doors:
+                if not player.inventory:
+                    if player.overlaps_rect(door):
+                        player.y = previous_y
+                        break
+                else:
+                    if player.overlaps_rect(door):
+                        self.level.doors.remove(door)
+                        self.player.inventory.pop()
 
     def load_level(self, index):
         self.level = self.levels[index]
@@ -114,6 +134,15 @@ class Game:
 
     def update(self, dt):
         self.move_player(dt)
+
+        # Schlüssel und Türen
+        for key in self.level.keys:
+            if self.player.overlaps_rect(key):
+                self.player.take(key)
+                break
+        for item in self.player.inventory:
+            if item in self.level.keys:
+                self.level.keys.remove(item)
 
     def render(self):
         # Hintergrund zeichnen

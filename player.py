@@ -8,6 +8,7 @@ class Player:
         self.radius = radius
         self.speed = 600
         self.color = color
+        self.inventory = []
 
     def overlaps_rect(self, rect):
         nearest_x = self.x
@@ -26,6 +27,9 @@ class Player:
         dy = self.y - nearest_y
         distance_squared = dx * dx + dy * dy
         return distance_squared < self.radius * self.radius
+
+    def take(self, item):
+        self.inventory.append(item)
 
     def render(self, surface):
         pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
