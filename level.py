@@ -25,10 +25,13 @@ class Level:
                 elif char == "G":
                     self.goal = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
                 elif char == "K":
-                    key_size = TILE_SIZE * 0.2
-                    self.keys.append(pygame.Rect(x + TILE_SIZE / 2 - key_size / 2, y + TILE_SIZE / 2 - key_size / 2, key_size, key_size))
+                    w = TILE_SIZE * 0.2
+                    h = TILE_SIZE * 0.2
+                    key_rect = pygame.Rect(x + TILE_SIZE / 2 - w / 2, y + TILE_SIZE / 2 - h / 2, w, h)
+                    self.keys.append(key_rect)
                 elif char == "D":
-                    self.doors.append(pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
+                    door_rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
+                    self.doors.append(door_rect)
 
     @property
     def cols(self):
@@ -45,11 +48,11 @@ class Level:
         if self.goal is not None:
             pygame.draw.rect(surface, "green", self.goal)
 
-        for key_rect in self.keys:
-            pygame.draw.rect(surface, "yellow", key_rect)
+        for door in self.doors:
+            pygame.draw.rect(surface, "brown", door)
 
-        for door_rect in self.doors:
-            pygame.draw.rect(surface, "brown", door_rect)
+        for key in self.keys:
+            pygame.draw.rect(surface, "yellow", key)
 
 
 TEST_LEVELS = [
@@ -60,27 +63,27 @@ TEST_LEVELS = [
             "# #### # ##### #",
             "#    #   #     #",
             "#### #########D#",
-            "#        K #G  #",
+            "#         K#G  #",
             "################",
         ]
     ),
     Level(
         [
             "################",
-            "#G     #       #",
-            "# ####D# ## ####",
-            "# ####    # ##P#",
-            "# ######### ## #",
-            "#     #K       #",
+            "#      #      K#",
+            "#D##K# #D## ####",
+            "#D##K#    # ##P#",
+            "# #########D## #",
+            "#    G#K       #",
             "################",
         ]
     ),
     Level(
         [
             "################",
-            "#P#K##     K##G#",
-            "# # ##D## #### #",
-            "#      ##   D  #",
+            "#P#K##      K#G#",
+            "# # ##D##D#### #",
+            "#      ##      #",
             "################",
         ]
     ),

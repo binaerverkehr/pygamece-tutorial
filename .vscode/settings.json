@@ -1,6 +1,7 @@
 {
     "files.exclude": {
         "**/.vscode": true,
-        ".vscode": true
+        ".vscode": true,
+        "**/overview.excalidraw": true
     }
 }
