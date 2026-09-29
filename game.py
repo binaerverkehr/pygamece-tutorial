@@ -1,6 +1,6 @@
 import pygame
 
-from constants import PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import HUD_HEIGHT, PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
 from level import TEST_LEVELS, Level
 from player import Player
 
@@ -21,7 +21,8 @@ class Game:
 
         width = self.level.cols * TILE_SIZE
         height = self.level.rows * TILE_SIZE
-        self.window = pygame.display.set_mode((width, height))
+        self.playfield = pygame.Surface((width, height))
+        self.window = pygame.display.set_mode((width, height + HUD_HEIGHT))
 
         player_x = self.level.player_start_x
         player_y = self.level.player_start_y
@@ -30,6 +31,7 @@ class Game:
         self.won = False
         font = pygame.font.Font(None, 72)
         self.win_text = font.render("Gewonnen!", True, "black")
+        self.hud_font = pygame.font.Font(None, 32)
 
     def move_player(self, dt):
         player = self.player
@@ -105,7 +107,8 @@ class Game:
         # Fenstergröße an Levelgröße anpassen
         width = self.level.cols * TILE_SIZE
         height = self.level.rows * TILE_SIZE
-        self.window = pygame.display.set_mode((width, height))
+        self.playfield = pygame.Surface((width, height))
+        self.window = pygame.display.set_mode((width, height + HUD_HEIGHT))
 
         # Entities
         self.player = Player(
@@ -137,18 +140,25 @@ class Game:
     def update(self, dt):
         self.move_player(dt)
 
+    def render_hud(self):
+        text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.levels)}"
+        text_surface = self.hud_font.render(text, True, "white")
+        self.window.blit(text_surface, (15, 15))
+
     def render(self):
         # Hintergrund zeichnen
-        self.window.fill("white")
+        self.window.fill("black")
+        self.playfield.fill("white")
 
-        self.level.render(self.window)
-        self.player.render(self.window)
+        self.level.render(self.playfield)
+        self.player.render(self.playfield)
 
         if self.won:
-            text_rect = self.win_text.get_rect(center=self.window.get_rect().center)
-            self.window.blit(self.win_text, text_rect)
+            text_rect = self.win_text.get_rect(center=self.playfield.get_rect().center)
+            self.playfield.blit(self.win_text, text_rect)
 
-        # Display aktualisieren
+        self.window.blit(self.playfield, (0, HUD_HEIGHT))
+        self.render_hud()
         pygame.display.flip()
 
     def run(self):
