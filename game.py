@@ -135,6 +135,10 @@ class Game:
     def update(self, dt):
         self.move_player(dt)
 
+        obstacles = self.level.walls + self.level.doors
+        for enemy in self.level.enemies:
+            enemy.update(dt, obstacles)
+
     def render_hud(self):
         text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.levels)}"
         text_surface = self.hud_font.render(text, True, "white")
