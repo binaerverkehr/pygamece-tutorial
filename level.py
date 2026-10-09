@@ -1,6 +1,7 @@
 import pygame
 
-from constants import TILE_SIZE
+from constants import ENEMY_RADIUS, TILE_SIZE
+from enemy import Enemy
 
 
 class Level:
@@ -9,6 +10,7 @@ class Level:
         self.walls = []
         self.keys = []
         self.doors = []
+        self.enemies = []
         self.goal = None
         self.player_start_x = 0
         self.player_start_y = 0
@@ -32,6 +34,11 @@ class Level:
                 elif char == "D":
                     door_rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
                     self.doors.append(door_rect)
+                elif char == "E":
+                    enemy_x = x + TILE_SIZE / 2
+                    enemy_y = y + TILE_SIZE / 2
+                    enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, "red")
+                    self.enemies.append(enemy_rect)
 
     @property
     def cols(self):
@@ -54,6 +61,9 @@ class Level:
         for key in self.keys:
             pygame.draw.rect(surface, "yellow", key)
 
+        for enemy in self.enemies:
+            enemy.render(surface)
+
 
 TEST_LEVELS = [
     Level(
@@ -61,7 +71,7 @@ TEST_LEVELS = [
             "################",
             "#P     #       #",
             "# #### # ##### #",
-            "#    #   #     #",
+            "#    #   #  E  #",
             "#### #########D#",
             "#         K#G  #",
             "################",
