@@ -35,36 +35,31 @@ class Game:
 
     def move_player(self, dt):
         player = self.player
-        distance = player.speed * dt
+        direction = pygame.Vector2(
+            self.keys[pygame.K_d] - self.keys[pygame.K_a],  # x-Bewegung
+            self.keys[pygame.K_s] - self.keys[pygame.K_w],  # y-Bewegung
+        )
 
-        dx = 0
-        dy = 0
+        if direction.length_squared() > 0:
+            direction = direction.normalize()
 
-        if self.keys[pygame.K_w]:
-            dy -= distance
-        if self.keys[pygame.K_s]:
-            dy += distance
-        if self.keys[pygame.K_a]:
-            dx -= distance
-        if self.keys[pygame.K_d]:
-            dx += distance
+        distance = direction * player.speed * dt
 
-        steps = int(distance) + 1
-        step_x = dx / steps
-        step_y = dy / steps
+        steps = int(distance.length()) + 1
+        step = distance / steps
 
         for _ in range(steps):
-            previous_x = player.x
-            player.x += step_x
+            previous_x = player.pos.x
+            player.pos.x += step.x
 
-            if player.x - player.radius < 0:
-                player.x = player.radius
-            if player.x + player.radius > WINDOW_WIDTH:
-                player.x = WINDOW_WIDTH - player.radius
+            if player.pos.x - player.radius < 0:
+                player.pos.x = player.radius
+            if player.pos.x + player.radius > WINDOW_WIDTH:
+                player.pos.x = WINDOW_WIDTH - player.radius
 
             for wall in self.level.walls:
                 if player.overlaps_rect(wall):
-                    player.x = previous_x
+                    player.pos.x = previous_x
                     break
 
             for door in self.level.doors:
@@ -72,20 +67,20 @@ class Game:
                     if player.use_key():
                         self.level.doors.remove(door)
                         break
-                    player.x = previous_x
+                    player.pos.x = previous_x
                     break
 
-            previous_y = player.y
-            player.y += step_y
+            previous_y = player.pos.y
+            player.pos.y += step.y
 
-            if player.y - player.radius < 0:
-                player.y = player.radius
-            if player.y + player.radius > WINDOW_HEIGHT:
-                player.y = WINDOW_HEIGHT - player.radius
+            if player.pos.y - player.radius < 0:
+                player.pos.y = player.radius
+            if player.pos.y + player.radius > WINDOW_HEIGHT:
+                player.pos.y = WINDOW_HEIGHT - player.radius
 
             for wall in self.level.walls:
                 if player.overlaps_rect(wall):
-                    player.y = previous_y
+                    player.pos.y = previous_y
                     break
 
             for door in self.level.doors:
@@ -93,7 +88,7 @@ class Game:
                     if player.use_key():
                         self.level.doors.remove(door)
                         break
-                    player.y = previous_y
+                    player.pos.y = previous_y
                     break
 
             for key in self.level.keys:
