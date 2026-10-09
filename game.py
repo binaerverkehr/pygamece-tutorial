@@ -136,7 +136,8 @@ class Game:
             for enemy in self.level.enemies:
                 distance = self.player.pos.distance_to(enemy.pos)
                 if distance < self.player.radius + enemy.radius:
-                    print("Getroffen!")
+                    self.load_level(self.level_index)
+                    break
 
     def update(self, dt):
         self.move_player(dt)
