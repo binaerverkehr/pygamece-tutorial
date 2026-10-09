@@ -1,10 +1,17 @@
 import pygame
 
+ENEMY_DIRECTIONS = {
+    ">": (1, 0),
+    "<": (-1, 0),
+    "^": (0, -1),
+    "v": (0, 1),
+}
+
 
 class Enemy:
-    def __init__(self, x: float, y: float, radius, color):
+    def __init__(self, x: float, y: float, radius, color, direction):
         self.pos = pygame.Vector2(x, y)
-        self.direction = pygame.Vector2(1, 0)
+        self.direction = pygame.Vector2(direction)
         self.radius = radius
         self.speed = 200
         self.color = color
