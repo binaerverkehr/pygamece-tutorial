@@ -131,6 +131,12 @@ class Game:
             else:
                 self.level_index += 1
                 self.load_level(self.level_index)
+        # Spieler berührt Gegner
+        if not self.won:
+            for enemy in self.level.enemies:
+                distance = self.player.pos.distance_to(enemy.pos)
+                if distance < self.player.radius + enemy.radius:
+                    print("Getroffen!")
 
     def update(self, dt):
         self.move_player(dt)
