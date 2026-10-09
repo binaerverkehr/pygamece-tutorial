@@ -1,7 +1,7 @@
 import pygame
 
 from constants import HUD_HEIGHT, PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
-from level import TEST_LEVELS, Level
+from level import LAYOUTS, Level
 from player import Player
 
 
@@ -13,20 +13,9 @@ class Game:
         self.dt = 0
         self.running = True
 
-        self.levels = TEST_LEVELS
+        self.layouts = LAYOUTS
         self.level_index = 0
-        self.level: Level = self.levels[self.level_index]
-
         self.load_level(self.level_index)
-
-        width = self.level.cols * TILE_SIZE
-        height = self.level.rows * TILE_SIZE
-        self.playfield = pygame.Surface((width, height))
-        self.window = pygame.display.set_mode((width, height + HUD_HEIGHT))
-
-        player_x = self.level.player_start_x
-        player_y = self.level.player_start_y
-        self.player = Player(player_x, player_y, PLAYER_RADIUS, "blue")
 
         self.won = False
         font = pygame.font.Font(None, 72)
@@ -98,7 +87,7 @@ class Game:
                     break
 
     def load_level(self, index):
-        self.level = self.levels[index]
+        self.level = Level(self.layouts[index])
         # Fenstergröße an Levelgröße anpassen
         width = self.level.cols * TILE_SIZE
         height = self.level.rows * TILE_SIZE
@@ -126,7 +115,7 @@ class Game:
         # Spieler erreicht Level-Ziel
         if not self.won and self.player.overlaps_rect(self.level.goal):
             # Wenn letztes Level erreicht, Sieg ansonsten nächstes Level
-            if self.level_index + 1 >= len(self.levels):
+            if self.level_index + 1 >= len(self.layouts):
                 self.won = True
             else:
                 self.level_index += 1
@@ -147,7 +136,7 @@ class Game:
             enemy.update(dt, obstacles)
 
     def render_hud(self):
-        text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.levels)}"
+        text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.layouts)}"
         text_surface = self.hud_font.render(text, True, "white")
         self.window.blit(text_surface, (15, 15))
 
