@@ -1,7 +1,7 @@
 import pygame
 
 from constants import ENEMY_RADIUS, TILE_SIZE
-from enemy import Enemy
+from enemy import ENEMY_DIRECTIONS, Enemy
 
 
 class Level:
@@ -34,10 +34,11 @@ class Level:
                 elif char == "D":
                     door_rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
                     self.doors.append(door_rect)
-                elif char == "E":
+                elif char in ENEMY_DIRECTIONS:
                     enemy_x = x + TILE_SIZE / 2
                     enemy_y = y + TILE_SIZE / 2
-                    enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, "red")
+                    direction = ENEMY_DIRECTIONS[char]
+                    enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, "red", direction)
                     self.enemies.append(enemy_rect)
 
     @property
@@ -70,14 +71,14 @@ LAYOUTS = [
         "################",
         "#P     #       #",
         "# #### # ##### #",
-        "#    #   #  E  #",
+        "#    #   #  <  #",
         "#### #########D#",
         "#         K#G  #",
         "################",
     ],
     [
         "################",
-        "#      #      K#",
+        "#   >  #      K#",
         "#D##K# #D## ####",
         "#D##K#    # ##P#",
         "# #########D## #",
@@ -88,7 +89,7 @@ LAYOUTS = [
         "################",
         "#P#K##      K#G#",
         "# # ##D##D#### #",
-        "#      ##      #",
+        "#>     ##      #",
         "################",
     ],
 ]
