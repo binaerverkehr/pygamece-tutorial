@@ -19,8 +19,7 @@ class Game:
 
         self.won = False
         self.paused = False
-        font = pygame.font.Font(None, 72)
-        self.win_text = font.render("Gewonnen!", True, "black")
+        self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
 
     def move_player(self, dt):
@@ -139,6 +138,11 @@ class Game:
         for enemy in self.level.enemies:
             enemy.update(dt, obstacles)
 
+    def render_overlay(self, text):
+        text_surface = self.overlay_font.render(text, True, "black")
+        text_rect = text_surface.get_rect(center=self.playfield.get_rect().center)
+        self.playfield.blit(text_surface, text_rect)
+
     def render_hud(self):
         text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.layouts)}"
         text_surface = self.hud_font.render(text, True, "white")
@@ -152,9 +156,10 @@ class Game:
         self.level.render(self.playfield)
         self.player.render(self.playfield)
 
+        if self.paused:
+            self.render_overlay("Pause")
         if self.won:
-            text_rect = self.win_text.get_rect(center=self.playfield.get_rect().center)
-            self.playfield.blit(self.win_text, text_rect)
+            self.render_overlay("Gewonnen!")
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
         self.render_hud()
