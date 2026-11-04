@@ -17,7 +17,7 @@ class Game:
         self.level_index = 0
         self.load_level(self.level_index)
 
-        self.won = False
+        self.state = "playing"
         self.paused = False
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
@@ -120,15 +120,15 @@ class Game:
         Spiel-Ereignisse
         """
         # Spieler erreicht Level-Ziel
-        if not self.won and self.player.overlaps_rect(self.level.goal):
+        if self.state == "playing" and self.player.overlaps_rect(self.level.goal):
             # Wenn letztes Level erreicht, Sieg ansonsten nächstes Level
             if self.level_index + 1 >= len(self.layouts):
-                self.won = True
+                self.state = "won"
             else:
                 self.level_index += 1
                 self.load_level(self.level_index)
         # Spieler berührt Gegner
-        if not self.won:
+        if self.state == "playing":
             for enemy in self.level.enemies:
                 distance = self.player.pos.distance_to(enemy.pos)
                 if distance < self.player.radius + enemy.radius:
@@ -162,7 +162,7 @@ class Game:
 
         if self.paused:
             self.render_overlay("Pause")
-        if self.won:
+        if self.state == "won":
             self.render_overlay("Gewonnen!")
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
@@ -174,7 +174,7 @@ class Game:
             self.dt = self.clock.tick(60) / 1000.0
 
             self.handle_events()
-            if not self.won and not self.paused:
+            if self.state == "playing" and not self.paused:
                 self.update(self.dt)
             self.render()
 
