@@ -161,7 +161,8 @@ class Game:
             self.dt = self.clock.tick(60) / 1000.0
 
             self.handle_events()
-            self.update(self.dt)
+            if not self.won:
+                self.update(self.dt)
             self.render()
 
         pygame.quit()
