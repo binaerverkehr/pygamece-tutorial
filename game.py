@@ -18,7 +18,6 @@ class Game:
         self.load_level(self.level_index)
 
         self.state = "playing"
-        self.paused = False
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
 
@@ -109,11 +108,14 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    self.paused = not self.paused
-            if event.type == pygame.WINDOWFOCUSLOST:
-                self.paused = True
-            if event.type == pygame.WINDOWFOCUSGAINED:
-                self.paused = False
+                    if self.state == "playing":
+                        self.state = "paused"
+                    elif self.state == "paused":
+                        self.state = "playing"
+            if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
+                self.state = "paused"
+            if event.type == pygame.WINDOWFOCUSGAINED and self.state == "paused":
+                self.state = "playing"
         # Tastatur-Ereignisse
         self.keys = pygame.key.get_pressed()
         """
@@ -160,9 +162,9 @@ class Game:
         self.level.render(self.playfield)
         self.player.render(self.playfield)
 
-        if self.paused:
+        if self.state == "paused":
             self.render_overlay("Pause")
-        if self.state == "won":
+        elif self.state == "won":
             self.render_overlay("Gewonnen!")
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
@@ -174,7 +176,7 @@ class Game:
             self.dt = self.clock.tick(60) / 1000.0
 
             self.handle_events()
-            if self.state == "playing" and not self.paused:
+            if self.state == "playing":
                 self.update(self.dt)
             self.render()
 
