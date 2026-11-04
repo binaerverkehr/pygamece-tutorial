@@ -110,6 +110,10 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused
+            if event.type == pygame.WINDOWFOCUSLOST:
+                self.paused = True
+            if event.type == pygame.WINDOWFOCUSGAINED:
+                self.paused = False
         # Tastatur-Ereignisse
         self.keys = pygame.key.get_pressed()
         """
