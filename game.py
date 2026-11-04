@@ -18,6 +18,7 @@ class Game:
         self.load_level(self.level_index)
 
         self.won = False
+        self.paused = False
         font = pygame.font.Font(None, 72)
         self.win_text = font.render("Gewonnen!", True, "black")
         self.hud_font = pygame.font.Font(None, 32)
@@ -107,6 +108,9 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.paused = not self.paused
         # Tastatur-Ereignisse
         self.keys = pygame.key.get_pressed()
         """
@@ -161,7 +165,7 @@ class Game:
             self.dt = self.clock.tick(60) / 1000.0
 
             self.handle_events()
-            if not self.won:
+            if not self.won and not self.paused:
                 self.update(self.dt)
             self.render()
 
