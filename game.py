@@ -113,8 +113,8 @@ class Game:
                     elif self.state == "paused":
                         self.state = "playing"
             if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
-                self.state = "paused"
-            if event.type == pygame.WINDOWFOCUSGAINED and self.state == "paused":
+                self.state = "focus_paused"
+            if event.type == pygame.WINDOWFOCUSGAINED and self.state == "focus_paused":
                 self.state = "playing"
         # Tastatur-Ereignisse
         self.keys = pygame.key.get_pressed()
@@ -162,7 +162,7 @@ class Game:
         self.level.render(self.playfield)
         self.player.render(self.playfield)
 
-        if self.state == "paused":
+        if self.state in ("paused", "focus_paused"):
             self.render_overlay("Pause")
         elif self.state == "won":
             self.render_overlay("Gewonnen!")
