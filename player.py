@@ -8,6 +8,7 @@ class Player:
         self.speed = 600
         self.color = color
         self.keys = 0
+        self.lives = 3
 
     def pickup_key(self):
         self.keys += 1

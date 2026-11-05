@@ -20,6 +20,7 @@ class Game:
         self.state = "playing"
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
+        self.heart_font = pygame.font.SysFont("arial,dejavusans", 32)
 
     def move_player(self, dt):
         player = self.player
@@ -150,9 +151,12 @@ class Game:
         self.playfield.blit(text_surface, text_rect)
 
     def render_hud(self):
+        hearts = self.heart_font.render("♥" * self.player.lives, True, "red")
+        self.window.blit(hearts, (15, 8))
+
         text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.layouts)}"
         text_surface = self.hud_font.render(text, True, "white")
-        self.window.blit(text_surface, (15, 15))
+        self.window.blit(text_surface, (125, 15))
 
     def render(self):
         # Hintergrund zeichnen
