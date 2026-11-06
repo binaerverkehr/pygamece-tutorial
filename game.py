@@ -131,7 +131,10 @@ class Game:
                 distance = self.player.pos.distance_to(enemy.pos)
                 if distance < self.player.radius + enemy.radius:
                     self.player.lives -= 1
-                    self.load_level(self.level_index)
+                    if self.player.lives == 0:
+                        self.state = "game_over"
+                    else:
+                        self.load_level(self.level_index)
                     break
 
     def update(self, dt):
@@ -166,6 +169,8 @@ class Game:
             self.render_overlay("Pause")
         elif self.state == "won":
             self.render_overlay("Gewonnen!")
+        elif self.state == "game_over":
+            self.render_overlay("Game Over!")
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
         self.render_hud()
