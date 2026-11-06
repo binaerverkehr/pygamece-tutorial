@@ -15,6 +15,7 @@ class Game:
 
         self.layouts = LAYOUTS
         self.level_index = 0
+        self.player = Player(PLAYER_RADIUS, "blue")
         self.load_level(self.level_index)
 
         self.state = "playing"
@@ -94,13 +95,7 @@ class Game:
         self.playfield = pygame.Surface((width, height))
         self.window = pygame.display.set_mode((width, height + HUD_HEIGHT))
 
-        # Entities
-        self.player = Player(
-            self.level.player_start_x,
-            self.level.player_start_y,
-            PLAYER_RADIUS,
-            "blue",
-        )
+        self.player.respawn(self.level.player_start_x, self.level.player_start_y)
 
     def handle_events(self):
         # Fenster-Ereignisse

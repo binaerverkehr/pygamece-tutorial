@@ -2,13 +2,17 @@ import pygame
 
 
 class Player:
-    def __init__(self, x: float, y: float, radius, color):
-        self.pos = pygame.Vector2(x, y)
+    def __init__(self, radius, color):
+        self.pos = pygame.Vector2()
         self.radius = radius
         self.speed = 600
         self.color = color
         self.keys = 0
         self.lives = 3
+
+    def respawn(self, x: float, y: float):
+        self.pos.update(x, y)
+        self.keys = 0
 
     def pickup_key(self):
         self.keys += 1
