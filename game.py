@@ -111,7 +111,7 @@ class Game:
                         self.state = "paused"
                     elif self.state == "paused":
                         self.state = "playing"
-                if event.key == pygame.K_r and self.state == "game_over":
+                if event.key == pygame.K_r and self.state in ("game_over", "won"):
                     self.start_game()
             if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
                 self.state = "focus_paused"
@@ -173,7 +173,7 @@ class Game:
         if self.state in ("paused", "focus_paused"):
             self.render_overlay("Pause")
         elif self.state == "won":
-            self.render_overlay("Gewonnen!")
+            self.render_overlay("Gewonnen! Neustart mit R")
         elif self.state == "game_over":
             self.render_overlay("Game Over! Neustart mit R")
 
