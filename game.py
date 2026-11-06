@@ -190,8 +190,6 @@ class Game:
         self.window.blit(hint, hint.get_rect(center=(center_x, center_y + 30)))
 
     def render_game(self):
-        self.playfield.fill("white")
-
         self.level.render(self.playfield)
         self.player.render(self.playfield)
 

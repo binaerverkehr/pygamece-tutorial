@@ -7,6 +7,7 @@ from enemy import ENEMY_DIRECTIONS, Enemy
 class Level:
     def __init__(self, layout: list[str], images):
         self.layout = layout
+        self.images = images
         self.walls = []
         self.keys = []
         self.doors = []
@@ -27,8 +28,8 @@ class Level:
                 elif char == "G":
                     self.goal = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
                 elif char == "K":
-                    w = TILE_SIZE * 0.2
-                    h = TILE_SIZE * 0.2
+                    w = TILE_SIZE * 0.6
+                    h = TILE_SIZE * 0.6
                     key_rect = pygame.Rect(x + TILE_SIZE / 2 - w / 2, y + TILE_SIZE / 2 - h / 2, w, h)
                     self.keys.append(key_rect)
                 elif char == "D":
@@ -50,17 +51,21 @@ class Level:
         return len(self.layout)
 
     def render(self, surface):
-        for rect in self.walls:
-            pygame.draw.rect(surface, "grey", rect)
+        for row in range(self.rows):
+            for col in range(self.cols):
+                surface.blit(self.images["floor"], (col * TILE_SIZE, row * TILE_SIZE))
+
+        for wall in self.walls:
+            surface.blit(self.images["wall"], wall)
 
         if self.goal is not None:
-            pygame.draw.rect(surface, "green", self.goal)
+            surface.blit(self.images["goal"], self.goal)
 
         for door in self.doors:
-            pygame.draw.rect(surface, "brown", door)
+            surface.blit(self.images["door"], door)
 
         for key in self.keys:
-            pygame.draw.rect(surface, "yellow", key)
+            surface.blit(self.images["key"], key)
 
         for enemy in self.enemies:
             enemy.render(surface)
