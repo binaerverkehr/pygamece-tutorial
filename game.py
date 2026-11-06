@@ -14,14 +14,17 @@ class Game:
         self.running = True
 
         self.layouts = LAYOUTS
-        self.level_index = 0
-        self.player = Player(PLAYER_RADIUS, "blue")
-        self.load_level(self.level_index)
+        self.start_game()
 
-        self.state = "playing"
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
         self.heart_font = pygame.font.SysFont("arial,dejavusans", 32)
+
+    def start_game(self):
+        self.level_index = 0
+        self.player = Player(PLAYER_RADIUS, "blue")
+        self.load_level(self.level_index)
+        self.state = "playing"
 
     def move_player(self, dt):
         player = self.player
@@ -108,6 +111,8 @@ class Game:
                         self.state = "paused"
                     elif self.state == "paused":
                         self.state = "playing"
+                if event.key == pygame.K_r and self.state == "game_over":
+                    self.start_game()
             if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
                 self.state = "focus_paused"
             if event.type == pygame.WINDOWFOCUSGAINED and self.state == "focus_paused":
@@ -170,7 +175,7 @@ class Game:
         elif self.state == "won":
             self.render_overlay("Gewonnen!")
         elif self.state == "game_over":
-            self.render_overlay("Game Over!")
+            self.render_overlay("Game Over! Neustart mit R")
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
         self.render_hud()
