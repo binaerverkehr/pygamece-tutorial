@@ -13,7 +13,7 @@ class Game:
         self.dt = 0
         self.running = True
 
-        self.player_image = pygame.image.load("assets/player.png")
+        self.player_image = pygame.image.load("assets/player.png").convert_alpha()
         self.layouts = LAYOUTS
         self.start_game()
         self.state = "menu"
