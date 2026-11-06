@@ -13,7 +13,10 @@ class Game:
         self.dt = 0
         self.running = True
 
-        self.player_image = pygame.image.load("assets/player.png").convert_alpha()
+        self.images = {}
+        for name in ("player", "enemy", "key", "floor", "wall", "door", "goal"):
+            self.images[name] = pygame.image.load(f"assets/{name}.png").convert_alpha()
+
         self.layouts = LAYOUTS
         self.start_game()
         self.state = "menu"
@@ -24,7 +27,7 @@ class Game:
 
     def start_game(self):
         self.level_index = 0
-        self.player = Player(PLAYER_RADIUS, self.player_image)
+        self.player = Player(PLAYER_RADIUS, self.images["player"])
         self.load_level(self.level_index)
         self.state = "playing"
 
@@ -93,7 +96,7 @@ class Game:
                     break
 
     def load_level(self, index):
-        self.level = Level(self.layouts[index])
+        self.level = Level(self.layouts[index], self.images)
         # Fenstergröße an Levelgröße anpassen
         width = self.level.cols * TILE_SIZE
         height = self.level.rows * TILE_SIZE

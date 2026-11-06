@@ -5,7 +5,7 @@ from enemy import ENEMY_DIRECTIONS, Enemy
 
 
 class Level:
-    def __init__(self, layout: list[str]):
+    def __init__(self, layout: list[str], images):
         self.layout = layout
         self.walls = []
         self.keys = []
@@ -38,7 +38,7 @@ class Level:
                     enemy_x = x + TILE_SIZE / 2
                     enemy_y = y + TILE_SIZE / 2
                     direction = ENEMY_DIRECTIONS[char]
-                    enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, "red", direction)
+                    enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, images["enemy"], direction)
                     self.enemies.append(enemy_rect)
 
     @property

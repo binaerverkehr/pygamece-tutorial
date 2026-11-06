@@ -9,12 +9,12 @@ ENEMY_DIRECTIONS = {
 
 
 class Enemy:
-    def __init__(self, x: float, y: float, radius, color, direction):
+    def __init__(self, x: float, y: float, radius, image, direction):
         self.pos = pygame.Vector2(x, y)
         self.direction = pygame.Vector2(direction)
         self.radius = radius
         self.speed = 200
-        self.color = color
+        self.image = image
 
     def overlaps_rect(self, rect):
         nearest = pygame.Vector2(
@@ -34,4 +34,4 @@ class Enemy:
                 break
 
     def render(self, surface):
-        pygame.draw.circle(surface, self.color, self.pos, self.radius)
+        surface.blit(self.image, self.image.get_rect(center=self.pos))
