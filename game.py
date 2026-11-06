@@ -13,6 +13,7 @@ class Game:
         self.dt = 0
         self.running = True
 
+        self.player_image = pygame.image.load("assets/player.png")
         self.layouts = LAYOUTS
         self.start_game()
         self.state = "menu"
@@ -23,7 +24,7 @@ class Game:
 
     def start_game(self):
         self.level_index = 0
-        self.player = Player(PLAYER_RADIUS, "blue")
+        self.player = Player(PLAYER_RADIUS, self.player_image)
         self.load_level(self.level_index)
         self.state = "playing"
 

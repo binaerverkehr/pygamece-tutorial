@@ -2,11 +2,11 @@ import pygame
 
 
 class Player:
-    def __init__(self, radius, color):
+    def __init__(self, radius, image):
         self.pos = pygame.Vector2()
         self.radius = radius
         self.speed = 600
-        self.color = color
+        self.image = image
         self.keys = 0
         self.lives = 3
 
@@ -30,4 +30,4 @@ class Player:
         return self.pos.distance_squared_to(nearest) < self.radius**2
 
     def render(self, surface):
-        pygame.draw.circle(surface, self.color, (self.pos.x, self.pos.y), self.radius)
+        surface.blit(self.image, self.pos)
