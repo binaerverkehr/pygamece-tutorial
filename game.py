@@ -114,6 +114,8 @@ class Game:
                         self.state = "playing"
                 if event.key == pygame.K_r and self.state in ("game_over", "won"):
                     self.start_game()
+                if event.key == pygame.K_RETURN and self.state == "menu":
+                    self.state = "playing"
             if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
                 self.state = "focus_paused"
             if event.type == pygame.WINDOWFOCUSGAINED and self.state == "focus_paused":
