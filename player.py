@@ -30,4 +30,4 @@ class Player:
         return self.pos.distance_squared_to(nearest) < self.radius**2
 
     def render(self, surface):
-        surface.blit(self.image, self.pos)
+        surface.blit(self.image, self.image.get_rect(center=self.pos))
