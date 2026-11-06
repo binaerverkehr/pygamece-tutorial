@@ -15,6 +15,7 @@ class Game:
 
         self.layouts = LAYOUTS
         self.start_game()
+        self.state = "menu"
 
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
