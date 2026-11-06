@@ -166,6 +166,24 @@ class Game:
     def render(self):
         # Hintergrund zeichnen
         self.window.fill("black")
+
+        if self.state == "menu":
+            self.render_menu()
+        else:
+            self.render_game()
+
+        pygame.display.flip()
+
+    def render_menu(self):
+        center_x, center_y = self.window.get_rect().center
+
+        title = self.overlay_font.render("Labyrinth", True, "white")
+        self.window.blit(title, title.get_rect(center=(center_x, center_y - 40)))
+
+        hint = self.hud_font.render("Bewegen mit WASD, Pause mit P, Start mit Enter", True, "white")
+        self.window.blit(hint, hint.get_rect(center=(center_x, center_y + 30)))
+
+    def render_game(self):
         self.playfield.fill("white")
 
         self.level.render(self.playfield)
@@ -180,7 +198,6 @@ class Game:
 
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
         self.render_hud()
-        pygame.display.flip()
 
     def run(self):
         while self.running:
