@@ -140,15 +140,12 @@ class Game:
                 self.load_level(self.level_index)
         # Spieler berührt Gegner
         if self.state == "playing":
-            for enemy in self.level.enemies:
-                distance = self.player.pos.distance_to(enemy.pos)
-                if distance < self.player.radius + enemy.radius:
-                    self.player.lives -= 1
-                    if self.player.lives == 0:
-                        self.state = "game_over"
-                    else:
-                        self.load_level(self.level_index)
-                    break
+            if pygame.sprite.spritecollideany(self.player, self.level.enemies, pygame.sprite.collide_circle):
+                self.player.lives -= 1
+                if self.player.lives == 0:
+                    self.state = "game_over"
+                else:
+                    self.load_level(self.level_index)
 
     def update(self, dt):
         self.move_player(dt)
