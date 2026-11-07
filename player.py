@@ -1,12 +1,14 @@
 import pygame
 
 
-class Player:
+class Player(pygame.sprite.Sprite):
     def __init__(self, radius, image):
+        super().__init__()
         self.pos = pygame.Vector2()
         self.radius = radius
         self.speed = 600
         self.image = image
+        self.rect = self.image.get_rect(center=self.pos)
         self.keys = 0
         self.lives = 3
 
@@ -28,6 +30,3 @@ class Player:
             pygame.math.clamp(self.pos.y, rect.top, rect.bottom),
         )
         return self.pos.distance_squared_to(nearest) < self.radius**2
-
-    def render(self, surface):
-        surface.blit(self.image, self.image.get_rect(center=self.pos))

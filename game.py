@@ -28,6 +28,7 @@ class Game:
     def start_game(self):
         self.level_index = 0
         self.player = Player(PLAYER_RADIUS, self.images["player"])
+        self.player_group = pygame.sprite.GroupSingle(self.player)
         self.load_level(self.level_index)
         self.state = "playing"
 
@@ -191,7 +192,7 @@ class Game:
 
     def render_game(self):
         self.level.render(self.playfield)
-        self.player.render(self.playfield)
+        self.player_group.draw(self.playfield)
 
         if self.state in ("paused", "focus_paused"):
             self.render_overlay("Pause")
