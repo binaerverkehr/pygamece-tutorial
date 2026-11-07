@@ -21,6 +21,9 @@ class Game:
         for name in ("key", "door", "hit", "goal", "win", "game_over"):
             self.sounds[name] = pygame.mixer.Sound(f"assets/{name}.wav")
 
+        pygame.mixer.music.load("assets/music.ogg")
+        pygame.mixer.music.set_volume(0.4)
+
         self.layouts = LAYOUTS
         self.start_game()
         self.state = "menu"
@@ -35,6 +38,7 @@ class Game:
         self.player_group = pygame.sprite.GroupSingle(self.player)
         self.load_level(self.level_index)
         self.state = "playing"
+        pygame.mixer.music.play(-1)
 
     def move_player(self, dt):
         player = self.player
