@@ -8,7 +8,6 @@ class Player(pygame.sprite.Sprite):
         self.radius = radius
         self.speed = 600
         self.image = image
-        self.rect = self.image.get_rect(center=self.pos)
         self.keys = 0
         self.lives = 3
 
@@ -30,3 +29,7 @@ class Player(pygame.sprite.Sprite):
             pygame.math.clamp(self.pos.y, rect.top, rect.bottom),
         )
         return self.pos.distance_squared_to(nearest) < self.radius**2
+
+    @property
+    def rect(self):
+        return self.image.get_rect(center=self.pos)
