@@ -57,12 +57,12 @@ class Game:
                 player.pos.x = WINDOW_WIDTH - player.radius
 
             for wall in self.level.walls:
-                if player.overlaps_rect(wall):
+                if player.overlaps_rect(wall.rect):
                     player.pos.x = previous_x
                     break
 
             for door in self.level.doors:
-                if player.overlaps_rect(door):
+                if player.overlaps_rect(door.rect):
                     if player.use_key():
                         self.level.doors.remove(door)
                         break
@@ -78,12 +78,12 @@ class Game:
                 player.pos.y = WINDOW_HEIGHT - player.radius
 
             for wall in self.level.walls:
-                if player.overlaps_rect(wall):
+                if player.overlaps_rect(wall.rect):
                     player.pos.y = previous_y
                     break
 
             for door in self.level.doors:
-                if player.overlaps_rect(door):
+                if player.overlaps_rect(door.rect):
                     if player.use_key():
                         self.level.doors.remove(door)
                         break
@@ -91,7 +91,7 @@ class Game:
                     break
 
             for key in self.level.keys:
-                if player.overlaps_rect(key):
+                if player.overlaps_rect(key.rect):
                     self.level.keys.remove(key)
                     self.player.pickup_key()
                     break
@@ -131,7 +131,7 @@ class Game:
         Spiel-Ereignisse
         """
         # Spieler erreicht Level-Ziel
-        if self.state == "playing" and self.player.overlaps_rect(self.level.goal):
+        if self.state == "playing" and self.player.overlaps_rect(self.level.goal.sprite.rect):
             # Wenn letztes Level erreicht, Sieg ansonsten nächstes Level
             if self.level_index + 1 >= len(self.layouts):
                 self.state = "won"
@@ -150,7 +150,7 @@ class Game:
     def update(self, dt):
         self.move_player(dt)
 
-        obstacles = self.level.walls + self.level.doors
+        obstacles = self.level.walls.sprites() + self.level.doors.sprites()
         self.level.enemies.update(dt, obstacles)
 
     def render_overlay(self, text):

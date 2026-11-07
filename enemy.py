@@ -22,7 +22,7 @@ class Enemy(Character):
         self.pos += self.direction * self.speed * dt
 
         for obstacle in obstacles:
-            if self.overlaps_rect(obstacle):
+            if self.overlaps_rect(obstacle.rect):
                 self.pos = previous_pos
                 self.direction = -self.direction
                 break
