@@ -126,16 +126,20 @@ class Game:
                 if event.key == pygame.K_p:
                     if self.state == "playing":
                         self.state = "paused"
+                        pygame.mixer.music.pause()
                     elif self.state == "paused":
                         self.state = "playing"
+                        pygame.mixer.music.unpause()
                 if event.key == pygame.K_r and self.state in ("game_over", "won"):
                     self.start_game()
                 if event.key == pygame.K_RETURN and self.state == "menu":
                     self.state = "playing"
             if event.type == pygame.WINDOWFOCUSLOST and self.state == "playing":
                 self.state = "focus_paused"
+                pygame.mixer.music.pause()
             if event.type == pygame.WINDOWFOCUSGAINED and self.state == "focus_paused":
                 self.state = "playing"
+                pygame.mixer.music.unpause()
         # Tastatur-Ereignisse
         self.keys = pygame.key.get_pressed()
         """
@@ -146,6 +150,7 @@ class Game:
             # Wenn letztes Level erreicht, Sieg ansonsten nächstes Level
             if self.level_index + 1 >= len(self.layouts):
                 self.state = "won"
+                pygame.mixer.music.stop()
                 self.sounds["win"].play()
             else:
                 self.sounds["goal"].play()
@@ -158,6 +163,7 @@ class Game:
                 self.sounds["hit"].play()
                 if self.player.lives == 0:
                     self.state = "game_over"
+                    pygame.mixer.music.stop()
                     self.sounds["game_over"].play()
                 else:
                     self.load_level(self.level_index)
