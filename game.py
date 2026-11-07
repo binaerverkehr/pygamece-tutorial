@@ -17,6 +17,10 @@ class Game:
         for name in ("player", "enemy", "key", "floor", "wall", "door", "goal"):
             self.images[name] = pygame.image.load(f"assets/{name}.png").convert_alpha()
 
+        self.sounds = {}
+        for name in ("key", "door", "hit", "goal", "win", "game_over"):
+            self.sounds[name] = pygame.mixer.Sound(f"assets/{name}.wav")
+
         self.layouts = LAYOUTS
         self.start_game()
         self.state = "menu"
@@ -94,6 +98,7 @@ class Game:
                 if player.overlaps_rect(key.rect):
                     self.level.keys.remove(key)
                     self.player.pickup_key()
+                    self.sounds["key"].play()
                     break
 
     def load_level(self, index):

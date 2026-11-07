@@ -1,8 +1,9 @@
-Grafiken für die Pygame-CE-Tutorial-Reihe von Binärverkehr
+Grafiken und Töne für die Pygame-CE-Tutorial-Reihe von Binärverkehr
 
-Dateien: player.png, enemy.png, key.png, floor.png, wall.png, door.png, goal.png
-Herkunft: eigens für diese Reihe erstellt, ohne fremde Vorlage.
+Bilder: player.png, enemy.png, key.png, floor.png, wall.png, door.png, goal.png
+Töne: key.wav, door.wav, hit.wav, goal.wav, win.wav, game_over.wav
+Herkunft: eigens für diese Reihe erstellt, ohne fremde Vorlage. Die Töne sind per Skript aus einfachen Wellenformen berechnet.
 Lizenz: CC0 1.0 Universal
 https://creativecommons.org/publicdomain/zero/1.0/deed.de
 
-Du darfst die Grafiken ohne Namensnennung frei verwenden, verändern und weitergeben.
+Du darfst die Dateien ohne Namensnennung frei verwenden, verändern und weitergeben.
