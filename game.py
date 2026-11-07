@@ -69,6 +69,7 @@ class Game:
                 if player.overlaps_rect(door.rect):
                     if player.use_key():
                         self.level.doors.remove(door)
+                        self.sounds["door"].play()
                         break
                     player.pos.x = previous_x
                     break
@@ -90,6 +91,7 @@ class Game:
                 if player.overlaps_rect(door.rect):
                     if player.use_key():
                         self.level.doors.remove(door)
+                        self.sounds["door"].play()
                         break
                     player.pos.y = previous_y
                     break
@@ -140,15 +142,19 @@ class Game:
             # Wenn letztes Level erreicht, Sieg ansonsten nächstes Level
             if self.level_index + 1 >= len(self.layouts):
                 self.state = "won"
+                self.sounds["win"].play()
             else:
+                self.sounds["goal"].play()
                 self.level_index += 1
                 self.load_level(self.level_index)
         # Spieler berührt Gegner
         if self.state == "playing":
             if pygame.sprite.spritecollideany(self.player, self.level.enemies, pygame.sprite.collide_circle):
                 self.player.lives -= 1
+                self.sounds["hit"].play()
                 if self.player.lives == 0:
                     self.state = "game_over"
+                    self.sounds["game_over"].play()
                 else:
                     self.load_level(self.level_index)
 
