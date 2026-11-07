@@ -154,8 +154,7 @@ class Game:
         self.move_player(dt)
 
         obstacles = self.level.walls + self.level.doors
-        for enemy in self.level.enemies:
-            enemy.update(dt, obstacles)
+        self.level.enemies.update(dt, obstacles)
 
     def render_overlay(self, text):
         text_surface = self.overlay_font.render(text, True, "black")

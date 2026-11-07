@@ -11,7 +11,7 @@ class Level:
         self.walls = []
         self.keys = []
         self.doors = []
-        self.enemies = []
+        self.enemies = pygame.sprite.Group()
         self.goal = None
         self.player_start_x = 0
         self.player_start_y = 0
@@ -40,7 +40,7 @@ class Level:
                     enemy_y = y + TILE_SIZE / 2
                     direction = ENEMY_DIRECTIONS[char]
                     enemy_rect = Enemy(enemy_x, enemy_y, ENEMY_RADIUS, images["enemy"], direction)
-                    self.enemies.append(enemy_rect)
+                    self.enemies.add(enemy_rect)
 
     @property
     def cols(self):
@@ -67,8 +67,7 @@ class Level:
         for key in self.keys:
             surface.blit(self.images["key"], key)
 
-        for enemy in self.enemies:
-            enemy.render(surface)
+        self.enemies.draw(surface)
 
 
 LAYOUTS = [

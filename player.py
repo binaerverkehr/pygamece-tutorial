@@ -1,13 +1,10 @@
-import pygame
+from character import Character
 
 
-class Player(pygame.sprite.Sprite):
+class Player(Character):
     def __init__(self, radius, image):
-        super().__init__()
-        self.pos = pygame.Vector2()
-        self.radius = radius
+        super().__init__(radius, image)
         self.speed = 600
-        self.image = image
         self.keys = 0
         self.lives = 3
 
@@ -22,14 +19,3 @@ class Player(pygame.sprite.Sprite):
         if self.keys:
             self.keys -= 1
             return True
-
-    def overlaps_rect(self, rect):
-        nearest = pygame.Vector2(
-            pygame.math.clamp(self.pos.x, rect.left, rect.right),
-            pygame.math.clamp(self.pos.y, rect.top, rect.bottom),
-        )
-        return self.pos.distance_squared_to(nearest) < self.radius**2
-
-    @property
-    def rect(self):
-        return self.image.get_rect(center=self.pos)
