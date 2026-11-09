@@ -15,7 +15,7 @@ class Game:
         self.running = True
 
         self.images = {}
-        for name in ("player", "enemy", "key", "floor", "wall", "door", "goal"):
+        for name in ("player", "enemy", "key", "floor", "wall", "door", "goal", "heart"):
             self.images[name] = pygame.image.load(ASSETS_DIR / f"{name}.png").convert_alpha()
 
         self.sounds = {}
@@ -31,7 +31,6 @@ class Game:
 
         self.overlay_font = pygame.font.Font(None, 72)
         self.hud_font = pygame.font.Font(None, 32)
-        self.heart_font = pygame.font.SysFont("arial,dejavusans", 32)
 
     def start_game(self):
         self.level_index = 0
@@ -181,8 +180,8 @@ class Game:
         self.playfield.blit(text_surface, text_rect)
 
     def render_hud(self):
-        hearts = self.heart_font.render("♥" * self.player.lives, True, "red")
-        self.window.blit(hearts, (15, 8))
+        for i in range(self.player.lives):
+            self.window.blit(self.images["heart"], (15 + i * 30, 18))
 
         text = f"Schlüssel: {self.player.keys} | Level {self.level_index + 1} von {len(self.layouts)}"
         text_surface = self.hud_font.render(text, True, "white")

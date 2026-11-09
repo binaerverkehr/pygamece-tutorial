@@ -1,6 +1,6 @@
 Grafiken, Töne und Musik für die Pygame-CE-Tutorial-Reihe von Binärverkehr
 
-Bilder: player.png, enemy.png, key.png, floor.png, wall.png, door.png, goal.png
+Bilder: player.png, enemy.png, key.png, floor.png, wall.png, door.png, goal.png, heart.png
 Töne: key.ogg, door.ogg, hit.ogg, goal.ogg, win.ogg, game_over.ogg
 Musik: music.ogg
 Herkunft: eigens für diese Reihe erstellt, ohne fremde Vorlage. Töne und Musik sind per Skript aus einfachen Wellenformen berechnet.
