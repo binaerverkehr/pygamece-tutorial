@@ -1,3 +1,5 @@
+import asyncio
+
 import pygame
 
 from constants import ASSETS_DIR, HUD_HEIGHT, PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
@@ -7,7 +9,6 @@ from player import Player
 
 class Game:
     def __init__(self):
-        pygame.init()
         self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
         self.dt = 0
@@ -221,7 +222,7 @@ class Game:
         self.window.blit(self.playfield, (0, HUD_HEIGHT))
         self.render_hud()
 
-    def run(self):
+    async def run(self):
         while self.running:
             self.dt = self.clock.tick(60) / 1000.0
 
@@ -229,8 +230,6 @@ class Game:
             if self.state == "playing":
                 self.update(self.dt)
             self.render()
+            await asyncio.sleep(0)
 
         pygame.quit()
-
-
-Game().run()
