@@ -1,6 +1,6 @@
 import pygame
 
-from constants import HUD_HEIGHT, PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import ASSETS_DIR, HUD_HEIGHT, PLAYER_RADIUS, TILE_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
 from level import LAYOUTS, Level
 from player import Player
 
@@ -15,13 +15,13 @@ class Game:
 
         self.images = {}
         for name in ("player", "enemy", "key", "floor", "wall", "door", "goal"):
-            self.images[name] = pygame.image.load(f"assets/{name}.png").convert_alpha()
+            self.images[name] = pygame.image.load(ASSETS_DIR / f"{name}.png").convert_alpha()
 
         self.sounds = {}
         for name in ("key", "door", "hit", "goal", "win", "game_over"):
-            self.sounds[name] = pygame.mixer.Sound(f"assets/{name}.wav")
+            self.sounds[name] = pygame.mixer.Sound(ASSETS_DIR / f"{name}.ogg")
 
-        pygame.mixer.music.load("assets/music.ogg")
+        pygame.mixer.music.load(ASSETS_DIR / "music.ogg")
         pygame.mixer.music.set_volume(0.4)
 
         self.layouts = LAYOUTS

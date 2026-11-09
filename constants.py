@@ -1,3 +1,7 @@
+from pathlib import Path
+
+ASSETS_DIR = Path(__file__).parent / "assets"
+
 TILE_SIZE = 60
 ENEMY_RADIUS = 20
 PLAYER_RADIUS = 20
